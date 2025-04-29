@@ -9,18 +9,11 @@ message.From.Add(from);
 var to = new MailboxAddress("Bob", "bob@examle.com");
 message.To.Add(to);
 message.Subject = "Hi Bob!";
-message.Body = new TextPart(TextFormat.Plain)
-{
-    Text = """
-           Hi Bob,
-           
-           This is that email thing I was telling you about.
-           
-           Pretty neat, huh?
-           
-           -Alice
-           """
-};
+
+var bb = new BodyBuilder();
+bb.TextBody = "Hello Bob in plain test";
+bb.HtmlBody = "<p>Hello Bob in HTML!</p>";
+message.Body = bb.ToMessageBody();
 
 using var smtp = new SmtpClient();
 await smtp.ConnectAsync("localhost", 1025);

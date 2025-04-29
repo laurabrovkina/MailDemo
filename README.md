@@ -14,8 +14,13 @@ telnet localhost 1025
 
 **Note**: There is an issue on this picture, it is supposed to be an empty line for headers before hello, otherwise sending an email command fails
 
+Use command `QUIT` to quit from the telnet session
+
 ## Received email
 Go to http://localhost:8025/ to see emails in an inbox:
 ![pic](./img/mailpit_inbox.jpg)
 * that we sent using telnet commands
 * our console app sent it with the first run
+
+When we send multipart message, check headers and raw message:
+![pic](./img/multipart_message.jpg)
