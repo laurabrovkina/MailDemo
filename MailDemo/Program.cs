@@ -1,5 +1,6 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
+using MimeKit.Utils;
 
 var message = new MimeMessage();
 var from = new MailboxAddress("Alice", "alice@example.com");
@@ -10,11 +11,17 @@ message.To.Add(to);
 message.Subject = "Hi Bob!";
 
 var bb = new BodyBuilder
-{
-    Attachments = { "cat.jpg" },
-    TextBody = "Hello Bob in plain test",
-    HtmlBody = "<p>Hello Bob in HTML!</p>"
+{ 
+    TextBody = "Hello Bob in plain test"
 };
+var imageEntity = bb.LinkedResources.Add("cat.jpg");
+imageEntity.ContentId = MimeUtils.GenerateMessageId();
+
+bb.HtmlBody = $"""
+              <p>Hello Bob!</p>
+              <p><img src="cid:{imageEntity.ContentId}" alt="Cat!" /></p>
+              """;
+
 message.Body = bb.ToMessageBody();
 
 using var smtp = new SmtpClient();
